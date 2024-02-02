@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/listingProductsFragment">
+
+    <fragment
+        android:id="@+id/listingProductsFragment"
+        android:name="amitapps.media.swipeapp.ListingProductsFragment"
+        android:label="fragment_listing_products"
+        tools:layout="@layout/fragment_listing_products" />
+</navigation>
