@@ -50,9 +50,15 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
 
     // Retrofit for handling API requests
-//    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-//    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
-    // Picasso for loading images from URLs
-//    implementation("com.squareup.picasso:picasso:2.8")
+//     Picasso for loading images from URLs
+    implementation("com.squareup.picasso:picasso:2.8")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    // hilt
+    implementation("com.google.dagger:hilt-android:2.50")
+
+
 }

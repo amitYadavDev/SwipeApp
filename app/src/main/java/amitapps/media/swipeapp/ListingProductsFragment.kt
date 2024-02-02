@@ -1,22 +1,28 @@
 package amitapps.media.swipeapp
 
+import amitapps.media.swipeapp.model.di.ApiModule
+import amitapps.media.swipeapp.model.remote.ApiService
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ListingProductsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class ListingProductsFragment : Fragment() {
+    private lateinit var productAdapter: RecyclerView.Adapter<*>
+    private lateinit var  recyclerView: RecyclerView
+    private lateinit var manager: RecyclerView.LayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,4 +32,43 @@ class ListingProductsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_listing_products, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+//        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewProducts)
+//        productAdapter = ProductAdapter(emptyList()) // Initialize with an empty list
+
+        manager = LinearLayoutManager(requireContext())
+
+
+        // Fetch data using Retrofit
+        fetchData()
+    }
+    private fun fetchData() {
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://app.getswipe.in/") // Replace with your API base URL
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val apiService = retrofit.create(ApiService::class.java)
+        GlobalScope.launch(Dispatchers.Main) {
+            try {
+                val response = apiService.getProducts()
+                Log.d("productAdapter_abc", response.body().toString())
+                if (response.isSuccessful) {
+                    recyclerView = requireView().findViewById<RecyclerView>(R.id.recyclerViewProducts).apply{
+                        productAdapter = ProductAdapter(response.body()!!)
+                        layoutManager = manager
+                        adapter = productAdapter
+                    }
+                } else {
+                    Log.d("productAdapter_abc", " response is empty()")
+                    // Handle empty response
+                }
+            } catch (e: Exception) {
+                // Handle network or API errors
+            }
+        }
+    }
 }
