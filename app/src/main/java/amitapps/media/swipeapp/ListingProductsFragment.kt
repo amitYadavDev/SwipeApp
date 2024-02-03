@@ -1,13 +1,14 @@
 package amitapps.media.swipeapp
 
-import amitapps.media.swipeapp.model.di.ApiModule
-import amitapps.media.swipeapp.model.remote.ApiService
+import amitapps.media.swipeapp.api.ProductAPI
+import amitapps.media.swipeapp.mvvm.ListingProductFragmentViewModel
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,13 +17,14 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class ListingProductsFragment : Fragment() {
     private lateinit var productAdapter: RecyclerView.Adapter<*>
     private lateinit var  recyclerView: RecyclerView
     private lateinit var manager: RecyclerView.LayoutManager
+
+    private val productViewModel by viewModels<ListingProductFragmentViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +41,7 @@ class ListingProductsFragment : Fragment() {
 //        productAdapter = ProductAdapter(emptyList()) // Initialize with an empty list
 
         manager = LinearLayoutManager(requireContext())
+        productViewModel.getProduct()
 
 
         // Fetch data using Retrofit
@@ -51,10 +54,10 @@ class ListingProductsFragment : Fragment() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        val apiService = retrofit.create(ApiService::class.java)
+        val productAPI = retrofit.create(ProductAPI::class.java)
         GlobalScope.launch(Dispatchers.Main) {
             try {
-                val response = apiService.getProducts()
+                val response = productAPI.getProducts()
                 Log.d("productAdapter_abc", response.body().toString())
                 if (response.isSuccessful) {
                     recyclerView = requireView().findViewById<RecyclerView>(R.id.recyclerViewProducts).apply{

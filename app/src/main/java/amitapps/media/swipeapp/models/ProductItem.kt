@@ -1,4 +1,4 @@
-package amitapps.media.swipeapp.model.remote
+package amitapps.media.swipeapp.models
 
 data class ProductItem(
     val image: String,

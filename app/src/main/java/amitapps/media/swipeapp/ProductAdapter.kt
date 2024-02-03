@@ -1,6 +1,6 @@
 package amitapps.media.swipeapp
 
-import amitapps.media.swipeapp.model.remote.ProductItem
+import amitapps.media.swipeapp.models.ProductItem
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
