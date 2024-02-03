@@ -42,7 +42,7 @@ class ProductAdapter(private val productList: List<ProductItem>) :
             // Load image using Glide library, or you can use any other image loading library
             Glide.with(itemView)
                 .load(product.image)
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.img)
                 .into(productImageView)
         }
     }

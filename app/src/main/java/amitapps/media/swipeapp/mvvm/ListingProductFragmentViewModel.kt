@@ -2,6 +2,7 @@ package amitapps.media.swipeapp.mvvm
 
 import amitapps.media.swipeapp.models.Product
 import amitapps.media.swipeapp.repository.ProductRepository
+import amitapps.media.swipeapp.utils.NetworkResult
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,11 +17,13 @@ class ListingProductFragmentViewModel @Inject constructor(
     private val productRepository: ProductRepository
 ) : ViewModel() {
 
+    val productResoponseLiveData: LiveData<NetworkResult<Product>>
+        get() = productRepository.productResponseLiveData
+
 
     fun getProduct() {
         viewModelScope.launch {
-           val response = productRepository.getProduct()
-            Log.d("ProductRepositoryVM", response.toString())
+            productRepository.getProduct()
         }
     }
 }

@@ -2,13 +2,16 @@ package amitapps.media.swipeapp
 
 import amitapps.media.swipeapp.api.ProductAPI
 import amitapps.media.swipeapp.mvvm.ListingProductFragmentViewModel
+import amitapps.media.swipeapp.utils.NetworkResult
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,7 +44,17 @@ class ListingProductsFragment : Fragment() {
 //        productAdapter = ProductAdapter(emptyList()) // Initialize with an empty list
 
         manager = LinearLayoutManager(requireContext())
-        productViewModel.getProduct()
+
+
+        productViewModel.productResoponseLiveData.observe(viewLifecycleOwner, Observer {
+            when(it) {
+                is NetworkResult.Success -> {}
+                is NetworkResult.Error -> {
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                }
+                is NetworkResult.Loading -> {}
+            }
+        })
 
 
         // Fetch data using Retrofit
