@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -48,20 +49,25 @@ class ListingProductsFragment : Fragment() {
 
         manager = LinearLayoutManager(requireContext())
 
-        val btn: Button = view.findViewById(R.id.buttonAddProduct)
-        btn.setOnClickListener {
-
-
-            productViewModel.addProduct(
-                AddProductItem(
-                    "dfkdlfflfdsklkfld",
-                    "amits",
-                    "9.999999",
-                    "9.000999"
-                )
-            )
-            Toast.makeText(requireContext(), "product added", Toast.LENGTH_LONG).show()
+        val button: Button = view.findViewById(R.id.buttonAddProduct)
+//        btn.setOnClickListener {
+//
+//
+//            productViewModel.addProduct(
+//                AddProductItem(
+//                    "dfkdlfflfdsklkfld",
+//                    "amits",
+//                    "9.999999",
+//                    "9.000999"
+//                )
+//            )
+//            Toast.makeText(requireContext(), "product added", Toast.LENGTH_LONG).show()
+//        }
+        button.setOnClickListener {
+                val bottomSheetFragment = AddProductFragment()
+                bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
         }
+
 
 
         bindObservers()
