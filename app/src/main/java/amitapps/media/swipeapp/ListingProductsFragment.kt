@@ -1,6 +1,8 @@
 package amitapps.media.swipeapp
 
 import amitapps.media.swipeapp.api.ProductAPI
+import amitapps.media.swipeapp.models.AddProductItem
+import amitapps.media.swipeapp.models.ProductItem
 import amitapps.media.swipeapp.mvvm.ListingProductFragmentViewModel
 import amitapps.media.swipeapp.utils.NetworkResult
 import android.os.Bundle
@@ -9,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -23,8 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 @AndroidEntryPoint
 class ListingProductsFragment : Fragment() {
-    private lateinit var productAdapter: RecyclerView.Adapter<*>
-    private lateinit var  recyclerView: RecyclerView
+    private lateinit var productAdapter: ProductAdapter
     private lateinit var manager: RecyclerView.LayoutManager
 
     private val productViewModel by viewModels<ListingProductFragmentViewModel>()
@@ -34,57 +36,58 @@ class ListingProductsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        productAdapter = ProductAdapter(emptyList())
         return inflater.inflate(R.layout.fragment_listing_products, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewProducts)
-//        productAdapter = ProductAdapter(emptyList()) // Initialize with an empty list
+        productViewModel.getProduct()
 
         manager = LinearLayoutManager(requireContext())
 
+        val btn: Button = view.findViewById(R.id.buttonAddProduct)
+        btn.setOnClickListener {
 
-        productViewModel.productResoponseLiveData.observe(viewLifecycleOwner, Observer {
-            when(it) {
-                is NetworkResult.Success -> {}
+
+            productViewModel.addProduct(
+                AddProductItem(
+                    "dfkdlfflfdsklkfld",
+                    "amits",
+                    "9.999999",
+                    "9.000999"
+                )
+            )
+            Toast.makeText(requireContext(), "product added", Toast.LENGTH_LONG).show()
+        }
+
+
+        bindObservers()
+    }
+
+    private fun bindObservers() {
+        productViewModel.productResponseLiveData.observe(viewLifecycleOwner, Observer {
+
+            //set binding.progressBar.isVisible = false;
+            when (it) {
+                is NetworkResult.Success -> {
+                        requireView().findViewById<RecyclerView>(R.id.recyclerViewProducts).apply {
+                            val response = it.data as List<ProductItem>
+                            productAdapter = ProductAdapter(response)
+                            layoutManager = manager
+                            adapter = productAdapter
+                        }
+                }
                 is NetworkResult.Error -> {
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
                 }
-                is NetworkResult.Loading -> {}
+
+                is NetworkResult.Loading -> {
+                    //setup progress bar
+                    //set binding.progressBar.isVisible = true
+                }
             }
         })
-
-
-        // Fetch data using Retrofit
-        fetchData()
-    }
-    private fun fetchData() {
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://app.getswipe.in/") // Replace with your API base URL
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val productAPI = retrofit.create(ProductAPI::class.java)
-        GlobalScope.launch(Dispatchers.Main) {
-            try {
-                val response = productAPI.getProducts()
-                Log.d("productAdapter_abc", response.body().toString())
-                if (response.isSuccessful) {
-                    recyclerView = requireView().findViewById<RecyclerView>(R.id.recyclerViewProducts).apply{
-                        productAdapter = ProductAdapter(response.body()!!)
-                        layoutManager = manager
-                        adapter = productAdapter
-                    }
-                } else {
-                    Log.d("productAdapter_abc", " response is empty()")
-                    // Handle empty response
-                }
-            } catch (e: Exception) {
-                // Handle network or API errors
-            }
-        }
     }
 }
