@@ -7,6 +7,7 @@ import amitapps.media.swipeapp.models.Product
 import amitapps.media.swipeapp.models.ProductItem
 import amitapps.media.swipeapp.utils.NetworkResult
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.json.JSONObject
@@ -41,6 +42,7 @@ class ProductRepository @Inject constructor(private val productAPI: ProductAPI) 
         }
 
         Log.d("productAddedResponse  ------>", productAddedResponse.message())
+//        Toast.makeText(requ, productAddedResponse.message(), Toast.LENGTH_LONG).show()
     }
 
     private fun handleResponse(response: Response<Product>) {
