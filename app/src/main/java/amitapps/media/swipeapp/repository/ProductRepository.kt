@@ -10,6 +10,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import org.json.JSONObject
 import retrofit2.Response
 import javax.inject.Inject
@@ -32,8 +34,20 @@ class ProductRepository @Inject constructor(private val productAPI: ProductAPI) 
     }
 
     suspend fun addProduct(addProductItem: AddProductItem) {
+        val productName: RequestBody =
+            RequestBody.create(MediaType.parse("text/plain"), addProductItem.product_name)
+        val productType: RequestBody =
+            RequestBody.create(MediaType.parse("text/plain"), addProductItem.product_type)
+        val price: RequestBody = RequestBody.create(
+            MediaType.parse("text/plain"),
+            java.lang.String.valueOf(addProductItem.price)
+        )
+        val tax: RequestBody =
+            RequestBody.create(MediaType.parse("text/plain"), java.lang.String.valueOf(addProductItem.tax))
+
+
         _statusLiveData.postValue(NetworkResult.Loading())
-        val productAddedResponse = productAPI.addProduct(addProductItem)
+        val productAddedResponse = productAPI.addProduct(productName, productType, price, tax)
 
         if(productAddedResponse.isSuccessful && productAddedResponse.body() != null) {
             _statusLiveData.postValue(NetworkResult.Success(productAddedResponse.message()))

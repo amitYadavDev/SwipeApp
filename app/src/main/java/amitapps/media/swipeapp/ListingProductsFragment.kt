@@ -52,15 +52,6 @@ class ListingProductsFragment : Fragment() {
         val button: Button = view.findViewById(R.id.buttonAddProduct)
 
 
-            productViewModel.addProduct(
-                AddProductItem(
-                    "dfkdlfflfdsklkfld",
-                    "amits",
-                    "9.999999",
-                    "9.000999"
-                )
-            )
-
         button.setOnClickListener {
                 val bottomSheetFragment = AddProductFragment()
                 bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
