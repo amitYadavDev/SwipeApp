@@ -17,6 +17,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,7 +48,8 @@ class ListingProductsFragment : Fragment() {
 
         productViewModel.getProduct()
 
-        manager = LinearLayoutManager(requireContext())
+//        manager = LinearLayoutManager(requireContext())
+        manager = GridLayoutManager(requireContext(), 2)
 
         val button: Button = view.findViewById(R.id.buttonAddProduct)
 
@@ -81,7 +83,7 @@ class ListingProductsFragment : Fragment() {
     private fun bindObservers() {
         productViewModel.productResponseLiveData.observe(viewLifecycleOwner, Observer {
 
-            //set binding.progressBar.isVisible = false;
+            //set binding.progressBar.isVisible = false
             when (it) {
                 is NetworkResult.Success -> {
                         requireView().findViewById<RecyclerView>(R.id.recyclerViewProducts).apply {

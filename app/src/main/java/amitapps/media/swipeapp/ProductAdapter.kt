@@ -31,13 +31,15 @@ class ProductAdapter(private val productList: List<ProductItem>) :
         private val productNameTextView: TextView = itemView.findViewById(R.id.productNameTextView)
         private val productTypeTextView: TextView = itemView.findViewById(R.id.productTypeTextView)
         private val productPriceTextView: TextView = itemView.findViewById(R.id.productPriceTextView)
+        private val productTax: TextView = itemView.findViewById(R.id.productTax)
         private val productImageView: ImageView = itemView.findViewById(R.id.productImageView)
 
         fun bind(product: ProductItem) {
-            productNameTextView.text = product.product_name
-            productTypeTextView.text = product.product_type
-            productPriceTextView.text = "$${product.price}"
-            Log.d("productAdapter_abc_adapter", product.product_name)
+            productNameTextView.text = "Name: ${product.product_name}"
+            productTypeTextView.text = "Type: ${product.product_type}"
+            productPriceTextView.text = "Price: Rs.${product.price}"
+            productTax.text = "Tax: Rs.${product.tax}"
+//            Log.d("productAdapter_abc_adapter", product.product_name)
 
             // Load image using Glide library, or you can use any other image loading library
             Glide.with(itemView)
