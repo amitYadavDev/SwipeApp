@@ -1,8 +1,10 @@
 package amitapps.media.swipeapp.repository
 
+import amitapps.media.swipeapp.AddProduct
 import amitapps.media.swipeapp.api.ProductAPI
 import amitapps.media.swipeapp.models.AddProductItem
 import amitapps.media.swipeapp.models.AddProductResponse
+import amitapps.media.swipeapp.models.AddWithImage
 import amitapps.media.swipeapp.models.Product
 import amitapps.media.swipeapp.models.ProductItem
 import amitapps.media.swipeapp.utils.NetworkResult
@@ -33,6 +35,32 @@ class ProductRepository @Inject constructor(private val productAPI: ProductAPI) 
         handleResponse(response)
     }
 
+    suspend fun addProductItemWithImage(addProductItem: AddWithImage) {
+        val productName: RequestBody =
+            RequestBody.create(MediaType.parse("text/plain"), addProductItem.product_name)
+        val productType: RequestBody =
+            RequestBody.create(MediaType.parse("text/plain"), addProductItem.product_type)
+        val price: RequestBody = RequestBody.create(
+            MediaType.parse("text/plain"),
+            java.lang.String.valueOf(addProductItem.price)
+        )
+        val tax: RequestBody =
+            RequestBody.create(MediaType.parse("text/plain"), java.lang.String.valueOf(addProductItem.tax))
+
+
+        _statusLiveData.postValue(NetworkResult.Loading())
+        val productAddedResponse = productAPI.addProductWithImage(productName, productType, price, tax, addProductItem.files)
+
+        if(productAddedResponse.isSuccessful && productAddedResponse.body() != null) {
+            _statusLiveData.postValue(NetworkResult.Success(productAddedResponse.message()))
+        } else {
+            _statusLiveData.postValue(NetworkResult.Error("product not added, something wrong"))
+        }
+
+        Log.d("productAddedResponse  AddWithImage ------>", productAddedResponse.message())
+//        Toast.makeText(requ, productAddedResponse.message(), Toast.LENGTH_LONG).show()
+    }
+
     suspend fun addProduct(addProductItem: AddProductItem) {
         val productName: RequestBody =
             RequestBody.create(MediaType.parse("text/plain"), addProductItem.product_name)
@@ -55,8 +83,7 @@ class ProductRepository @Inject constructor(private val productAPI: ProductAPI) 
             _statusLiveData.postValue(NetworkResult.Error("product not added, something wrong"))
         }
 
-        Log.d("productAddedResponse  ------>", productAddedResponse.message())
-//        Toast.makeText(requ, productAddedResponse.message(), Toast.LENGTH_LONG).show()
+        Log.d("productAddedResponseAddWithoutImage ------>", productAddedResponse.message())
     }
 
     private fun handleResponse(response: Response<Product>) {

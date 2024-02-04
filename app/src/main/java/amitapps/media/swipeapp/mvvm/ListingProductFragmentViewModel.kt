@@ -1,6 +1,7 @@
 package amitapps.media.swipeapp.mvvm
 
 import amitapps.media.swipeapp.models.AddProductItem
+import amitapps.media.swipeapp.models.AddWithImage
 import amitapps.media.swipeapp.models.Product
 import amitapps.media.swipeapp.repository.ProductRepository
 import amitapps.media.swipeapp.utils.NetworkResult
@@ -28,15 +29,13 @@ class ListingProductFragmentViewModel @Inject constructor(
 
     fun addProduct(addProductItem: AddProductItem) {
         viewModelScope.launch {
-
-
-//            val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
-//            val filePart = MultipartBody.Part.createFormData("files", file.getName(), requestFile)
-
-//            val call: Call<Void> =
-//                productService.addProduct(productName, productType, price, tax, filePart)
             productRepository.addProduct(addProductItem)
-            Log.d("productAddedResponse ", " clicked")
+        }
+    }
+
+    fun addProductItemWithImage(addProductItem: AddWithImage) {
+        viewModelScope.launch {
+            productRepository.addProductItemWithImage(addProductItem)
         }
     }
 

@@ -3,7 +3,7 @@ package amitapps.media.swipeapp.models
 import com.google.gson.annotations.SerializedName
 import okhttp3.MultipartBody
 
-data class AddProductItem(
+data class AddWithImage(
     @SerializedName("product_name")
     val product_name: String,
     @SerializedName("product_type")
@@ -11,5 +11,7 @@ data class AddProductItem(
     @SerializedName("price")
     val price: String,
     @SerializedName("tax")
-    val tax: String
+    val tax: String,
+    @SerializedName("files")
+    val files: List<MultipartBody.Part>
 )

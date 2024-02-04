@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F5F5"
     tools:context=".AddProductFragment">
 
     <RelativeLayout
@@ -12,12 +14,14 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilProductName"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etProductName"
+                style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Product Name" />
@@ -25,6 +29,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilProductType"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tilProductName"
@@ -32,6 +37,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etProductType"
+                style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Product Type" />
@@ -39,6 +45,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilPrice"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tilProductType"
@@ -46,6 +53,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPrice"
+                style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
@@ -54,6 +62,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilTax"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tilPrice"
@@ -61,24 +70,53 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etTax"
+                style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
                 android:hint="Tax Rate" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Add a button to submit the data -->
-        <Button
-            android:id="@+id/btnSubmit"
-            android:layout_width="wrap_content"
+        <!-- Horizontal LinearLayout to align ImageView and Select Image button -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tilTax"
-            android:background="@drawable/round"
-            android:textColor="#0D5C10"
-            android:layout_alignParentRight="true"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:id="@+id/image"
+            android:layout_marginTop="16dp">
+
+            <!-- ImageView for product image -->
+            <ImageView
+                android:id="@+id/ivProductImage"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/img"
+                android:scaleType="centerCrop"
+                android:background="@drawable/round" />
+
+            <!-- Button to select image -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSelectImage"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_height="wrap_content"
+                android:text="Select Image" />
+        </LinearLayout>
+
+        <!-- Add a button to submit the data aligned to the right -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSubmit"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/image"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="16dp"
             android:text="Submit" />
 
     </RelativeLayout>
-
 
 </FrameLayout>
