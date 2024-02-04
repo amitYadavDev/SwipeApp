@@ -50,27 +50,41 @@ class ListingProductsFragment : Fragment() {
         manager = LinearLayoutManager(requireContext())
 
         val button: Button = view.findViewById(R.id.buttonAddProduct)
-//        btn.setOnClickListener {
-//
-//
-//            productViewModel.addProduct(
-//                AddProductItem(
-//                    "dfkdlfflfdsklkfld",
-//                    "amits",
-//                    "9.999999",
-//                    "9.000999"
-//                )
-//            )
-//            Toast.makeText(requireContext(), "product added", Toast.LENGTH_LONG).show()
-//        }
+
+
+            productViewModel.addProduct(
+                AddProductItem(
+                    "dfkdlfflfdsklkfld",
+                    "amits",
+                    "9.999999",
+                    "9.000999"
+                )
+            )
+
         button.setOnClickListener {
                 val bottomSheetFragment = AddProductFragment()
                 bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+                bindObserversForAddProduct()
         }
 
-
-
         bindObservers()
+    }
+
+    private fun bindObserversForAddProduct() {
+            productViewModel.statusLiveData.observe(viewLifecycleOwner, Observer {
+                when(it) {
+                    is NetworkResult.Success -> {
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                    }
+                    is NetworkResult.Error -> {
+                        Toast.makeText(requireContext(), it.message + "  AddProductFragment", Toast.LENGTH_LONG).show()
+                    }
+                    is NetworkResult.Loading -> {
+//                    Toast.makeText(requireContext(), "data not able to post", Toast.LENGTH_LONG).show()
+                    }
+                }
+            })
+
     }
 
     private fun bindObservers() {

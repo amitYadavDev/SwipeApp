@@ -26,6 +26,7 @@ class ListingProductFragmentViewModel @Inject constructor(
     fun addProduct(addProductItem: AddProductItem) {
         viewModelScope.launch {
             productRepository.addProduct(addProductItem)
+            Log.d("productAddedResponse ", " clicked")
         }
     }
 
