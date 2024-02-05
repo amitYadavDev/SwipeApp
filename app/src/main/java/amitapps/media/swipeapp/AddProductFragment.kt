@@ -1,5 +1,6 @@
 package amitapps.media.swipeapp
 
+import amitapps.media.swipeapp.databinding.FragmentAddProduct2Binding
 import amitapps.media.swipeapp.models.AddProductItem
 import amitapps.media.swipeapp.models.AddWithImage
 import amitapps.media.swipeapp.mvvm.ListingProductFragmentViewModel
@@ -41,16 +42,13 @@ import java.io.File
 
 @AndroidEntryPoint
 class AddProductFragment : BottomSheetDialogFragment() {
-    private lateinit var productName: TextInputEditText
     private var productType: String = Constants.ProductType.Product.toString()
-    private lateinit var autoCompleteTextView: AutoCompleteTextView
-    private lateinit var productPrice: TextInputEditText
-    private lateinit var productTax: TextInputEditText
-    private lateinit var submit: Button
-    private lateinit var ivProductImage: ImageView
-    private lateinit var btnSelectImage: Button
+
     private var selectedImageUris: List<Uri> = emptyList()
     private val REQUEST_IMAGE_PICK = 100
+
+    private var _binding: FragmentAddProduct2Binding? = null
+    private val binding get() = _binding!!
 
     private val productFragmentViewModel by viewModels<ListingProductFragmentViewModel>()
 
@@ -59,7 +57,8 @@ class AddProductFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_product2, container, false)
+        _binding = FragmentAddProduct2Binding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -68,23 +67,14 @@ class AddProductFragment : BottomSheetDialogFragment() {
     }
 
     private fun addData() {
-        productName = requireView().findViewById(R.id.etProductName)
-        productPrice = requireView().findViewById(R.id.etPrice)
-        productTax = requireView().findViewById(R.id.etTax)
-        submit = requireView().findViewById(R.id.btnSubmit)
-        btnSelectImage = requireView().findViewById(R.id.btnSelectImage)
-        ivProductImage = requireView().findViewById(R.id.ivProductImage)
-        autoCompleteTextView = requireView().findViewById(R.id.spinnerProductType)
-
         selectProductType()
+        
 
-
-
-        btnSelectImage.setOnClickListener {
+        binding.btnSelectImage.setOnClickListener {
             selectImage()
         }
 
-        submit.setOnClickListener {
+        binding.btnSubmit.setOnClickListener {
             if (fieldShouldNotEmpty()) {
                 if (selectedImageUris.isNotEmpty()) {
                     val imageFiles = selectedImageUris.map { uri ->
@@ -96,14 +86,14 @@ class AddProductFragment : BottomSheetDialogFragment() {
                         MultipartBody.Part.createFormData("files[]", file.name, requestFile)
                     }
                     val add = AddWithImage(
-                        productName.text.toString(), productType, productPrice.text.toString(),
-                        productTax.text.toString(), imageParts
+                        binding.etProductName.text.toString(), productType, binding.etPrice.text.toString(),
+                        binding.etTax.text.toString(), imageParts
                     )
                     productFragmentViewModel.addProductItemWithImage(add)
                 } else {
                     val add = AddProductItem(
-                        productName.text.toString(), productType, productPrice.text.toString(),
-                        productTax.text.toString()
+                        binding.etProductName.text.toString(), productType, binding.etPrice.text.toString(),
+                        binding.etTax.text.toString()
                     )
                     productFragmentViewModel.addProduct(add)
                     dismiss()
@@ -121,9 +111,9 @@ class AddProductFragment : BottomSheetDialogFragment() {
             ArrayAdapter(requireContext(), R.layout.dropdown_item, productTypes.map { it.name })
 
         // Apply the adapter to the AutoCompleteTextView
-        autoCompleteTextView.setAdapter(adapter)
+        binding.spinnerProductType.setAdapter(adapter)
 
-        autoCompleteTextView.setOnItemClickListener { parent, view, position, id ->
+        binding.spinnerProductType.setOnItemClickListener { parent, view, position, id ->
             val selectedProductType = parent.adapter.getItem(position)
             productType = selectedProductType.toString()
 //            Log.d("autoCompleteTextView  ", productType)
@@ -136,16 +126,16 @@ class AddProductFragment : BottomSheetDialogFragment() {
     }
 
     private fun fieldShouldNotEmpty(): Boolean {
-        Log.d("fieldShouldNotEmpty", "  ${productName.text.toString().isBlank()}")
+        Log.d("fieldShouldNotEmpty", "  ${binding.etProductName.text.toString().isBlank()}")
 
-        if (productName.text.isNullOrBlank()) {
-            productName.requestFocus()
+        if (binding.etProductName.text.isNullOrBlank()) {
+            binding.etProductName.requestFocus()
             return false
-        } else if (productPrice.text.isNullOrBlank()) {
-            productPrice.requestFocus()
+        } else if (binding.etPrice.text.isNullOrBlank()) {
+            binding.etPrice.requestFocus()
             return false
-        } else if (productTax.text.isNullOrBlank()) {
-            productTax.requestFocus()
+        } else if (binding.etTax.text.isNullOrBlank()) {
+            binding.etTax.requestFocus()
             return false
         }
         return true
@@ -164,7 +154,7 @@ class AddProductFragment : BottomSheetDialogFragment() {
             data?.data?.let { uri ->
                 // Handle the selected image URI
                 val bitmap = getBitmapFromUri(uri)
-                ivProductImage.setImageBitmap(bitmap)
+                binding.ivProductImage.setImageBitmap(bitmap)
                 selectedImageUris = listOf(uri)
             }
         }
