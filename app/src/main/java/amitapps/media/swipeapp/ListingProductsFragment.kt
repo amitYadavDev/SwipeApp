@@ -2,10 +2,13 @@ package amitapps.media.swipeapp
 
 import amitapps.media.swipeapp.api.ProductAPI
 import amitapps.media.swipeapp.databinding.FragmentListingProductsBinding
+import amitapps.media.swipeapp.databinding.NoInternetConnectionBinding
 import amitapps.media.swipeapp.models.AddProductItem
 import amitapps.media.swipeapp.models.ProductItem
 import amitapps.media.swipeapp.mvvm.ListingProductFragmentViewModel
 import amitapps.media.swipeapp.utils.NetworkResult
+import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -39,6 +42,8 @@ class ListingProductsFragment : Fragment() {
     private var _binding: FragmentListingProductsBinding? = null
     private val binding get() = _binding!!
 
+    private var isConnected = true
+
     private var backPressedCount = 0
     private val BACK_PRESS_INTERVAL = 2000
 
@@ -57,7 +62,6 @@ class ListingProductsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        productViewModel.getProduct()
 
         binding.searchView.clearFocus()
 
@@ -68,9 +72,22 @@ class ListingProductsFragment : Fragment() {
             findNavController().navigate(R.id.action_listingProductsFragment_to_addProductFragment)
         }
 
-        bindObservers()
-        // Set a listener on the SearchView
+        // Check for internet connectivity
+
+        isConnected = isNetworkConnected(requireContext())
+        // Show/hide the placeholder based on connectivity status
+        binding.textViewNoInternet.visibility = View.VISIBLE
+        binding.recyclerViewProducts.visibility = View.GONE
+
+        if(isConnected) {
+            binding.recyclerViewProducts.visibility = View.VISIBLE
+            binding.textViewNoInternet.visibility = View.GONE
+            productViewModel.getProduct()
+            bindObservers()
+        }
+
         searchProducts()
+        
 
         // Set up back press handling
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
@@ -81,7 +98,12 @@ class ListingProductsFragment : Fragment() {
             }
         )
     }
-
+    private fun isNetworkConnected(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
+    }
     private fun searchProducts() {
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
