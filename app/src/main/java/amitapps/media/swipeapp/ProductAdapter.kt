@@ -19,12 +19,25 @@ class ProductAdapter(private val productList: List<ProductItem>) :
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        val product = productList[position]
+        val product = filteredData[position]
         holder.bind(product)
     }
 
+    private var filteredData: List<ProductItem> = productList
+
+    // Other methods in the adapter...
+
+    fun filter(query: String) {
+        filteredData = productList.filter {
+            it.product_name.contains(query, ignoreCase = true)
+            // Replace 'name' with the field you want to search in.
+        }
+        notifyDataSetChanged()
+    }
+
+
     override fun getItemCount(): Int {
-        return productList.size
+        return filteredData.size
     }
 
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

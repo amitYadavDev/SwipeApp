@@ -13,7 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import androidx.appcompat.widget.SearchView
+import android.widget.SearchView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -52,6 +52,7 @@ class ListingProductsFragment : Fragment() {
         manager = GridLayoutManager(requireContext(), 2)
 
         val button: Button = view.findViewById(R.id.buttonAddProduct)
+        val searchView: SearchView = view.findViewById(R.id.searchView)
 
 
         button.setOnClickListener {
@@ -61,6 +62,19 @@ class ListingProductsFragment : Fragment() {
         }
 
         bindObservers()
+        // Set a listener on the SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                productAdapter.filter(newText.orEmpty())
+                Log.d("onQueryTextChange", newText.toString())
+                return true
+            }
+        })
+
     }
 
     private fun bindObserversForAddProduct() {
