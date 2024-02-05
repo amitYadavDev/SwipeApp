@@ -182,13 +182,13 @@ class AddProductFragment : BottomSheetDialogFragment() {
     private fun selectImage() {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
-                android.Manifest.permission.READ_EXTERNAL_STORAGE
+                android.Manifest.permission.READ_MEDIA_IMAGES
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
                 requireActivity(),
                 arrayOf(
-                    android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                    android.Manifest.permission.READ_MEDIA_IMAGES,
                     android.Manifest.permission.MANAGE_EXTERNAL_STORAGE
                 ),
                 READ_EXTERNAL_STORAGE_REQUEST_CODE
