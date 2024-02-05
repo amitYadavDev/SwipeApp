@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import android.widget.SearchView
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -37,6 +38,9 @@ class ListingProductsFragment : Fragment() {
     private var _binding: FragmentListingProductsBinding? = null
     private val binding get() = _binding!!
 
+    private var backPressedCount = 0
+    private val BACK_PRESS_INTERVAL = 2000
+
     private val productViewModel by viewModels<ListingProductFragmentViewModel>()
 
     override fun onCreateView(
@@ -54,17 +58,27 @@ class ListingProductsFragment : Fragment() {
 
         productViewModel.getProduct()
 
+        binding.searchView.clearFocus()
+
         manager = GridLayoutManager(requireContext(), 2)
 
 
         binding.buttonAddProduct.setOnClickListener {
             findNavController().navigate(R.id.action_listingProductsFragment_to_addProductFragment)
-            bindObserversForAddProduct()
         }
 
         bindObservers()
         // Set a listener on the SearchView
         searchProducts()
+
+        // Set up back press handling
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    onBackButtonPressed()
+                }
+            }
+        )
     }
 
     private fun searchProducts() {
@@ -81,28 +95,7 @@ class ListingProductsFragment : Fragment() {
         })
     }
 
-    private fun bindObserversForAddProduct() {
-        productViewModel.statusLiveData.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is NetworkResult.Success -> {
-                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
-                }
 
-                is NetworkResult.Error -> {
-                    Toast.makeText(
-                        requireContext(),
-                        it.message + "  AddProductFragment",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-
-                is NetworkResult.Loading -> {
-//                    Toast.makeText(requireContext(), "data not able to post", Toast.LENGTH_LONG).show()
-                }
-            }
-        })
-
-    }
 
     private fun bindObservers() {
         productViewModel.productResponseLiveData.observe(viewLifecycleOwner, Observer {
@@ -128,5 +121,23 @@ class ListingProductsFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun onBackButtonPressed() {
+        if (backPressedCount == 1) {
+            // If back button pressed twice within the specified interval, exit the app
+            requireActivity().finish()
+        } else {
+            // If it's the first press, show a message or perform any other action
+             Toast.makeText(requireContext(), "Press back again to exit", Toast.LENGTH_SHORT).show()
+
+            // Increment the back press count
+            backPressedCount++
+            binding.searchView.clearFocus()
+            binding.searchView.setQuery("", false)
+
+            // Reset the count after the specified interval
+            view?.postDelayed({ backPressedCount = 0 }, BACK_PRESS_INTERVAL.toLong())
+        }
     }
 }

@@ -38,12 +38,13 @@
             android:gravity="center"
             android:layout_alignParentRight="true"
             android:layout_below="@id/tilProductName"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="8dp">
 
             <AutoCompleteTextView
                 android:id="@+id/spinnerProductType"
                 android:layout_width="wrap_content"
                 android:focusable="true"
+                android:singleLine="true"
                 android:layout_height="wrap_content"
                 android:hint="Select Type"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -54,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tilProductType"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="8dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPrice"
@@ -73,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tilPrice"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="8dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etTax"
@@ -94,7 +95,7 @@
             android:orientation="horizontal"
             android:gravity="center"
             android:id="@+id/image"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="8dp">
 
             <!-- ImageView for product image -->
             <ImageView
@@ -123,7 +124,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/image"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:text="Submit" />
 
     </RelativeLayout>

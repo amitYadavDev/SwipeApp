@@ -68,12 +68,18 @@ class AddProductFragment : BottomSheetDialogFragment() {
 
     private fun addData() {
         selectProductType()
-        
+
 
         binding.btnSelectImage.setOnClickListener {
             selectImage()
         }
 
+        handleAddProduct()
+
+        bindObservers()
+    }
+
+    private fun handleAddProduct() {
         binding.btnSubmit.setOnClickListener {
             if (fieldShouldNotEmpty()) {
                 if (selectedImageUris.isNotEmpty()) {
@@ -86,17 +92,22 @@ class AddProductFragment : BottomSheetDialogFragment() {
                         MultipartBody.Part.createFormData("files[]", file.name, requestFile)
                     }
                     val add = AddWithImage(
-                        binding.etProductName.text.toString(), productType, binding.etPrice.text.toString(),
-                        binding.etTax.text.toString(), imageParts
+                        binding.etProductName.text.toString(),
+                        productType,
+                        binding.etPrice.text.toString(),
+                        binding.etTax.text.toString(),
+                        imageParts
                     )
                     productFragmentViewModel.addProductItemWithImage(add)
                 } else {
                     val add = AddProductItem(
-                        binding.etProductName.text.toString(), productType, binding.etPrice.text.toString(),
+                        binding.etProductName.text.toString(),
+                        productType,
+                        binding.etPrice.text.toString(),
                         binding.etTax.text.toString()
                     )
                     productFragmentViewModel.addProduct(add)
-                    dismiss()
+//                    dismiss()
                 }
 
             }
@@ -139,6 +150,30 @@ class AddProductFragment : BottomSheetDialogFragment() {
             return false
         }
         return true
+    }
+
+    private fun bindObservers() {
+        productFragmentViewModel.statusLiveData.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is NetworkResult.Success -> {
+                    findNavController().popBackStack()
+                    Toast.makeText(requireContext(), "Product added Successfully!", Toast.LENGTH_LONG).show()
+                }
+
+                is NetworkResult.Error -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "Failed",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+                is NetworkResult.Loading -> {
+//                    Toast.makeText(requireContext(), "data not able to post", Toast.LENGTH_LONG).show()
+                }
+            }
+        })
+
     }
 
 
