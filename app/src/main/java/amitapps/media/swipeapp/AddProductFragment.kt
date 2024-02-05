@@ -76,7 +76,7 @@ class AddProductFragment : BottomSheetDialogFragment() {
         ivProductImage = requireView().findViewById(R.id.ivProductImage)
         autoCompleteTextView = requireView().findViewById(R.id.spinnerProductType)
 
-       selectProductType()
+        selectProductType()
 
 
 
@@ -84,23 +84,27 @@ class AddProductFragment : BottomSheetDialogFragment() {
             selectImage()
         }
 
-
-        if(fieldShouldNotEmpty()) {
-            submit.setOnClickListener {
-                if(selectedImageUris.isNotEmpty()) {
+        submit.setOnClickListener {
+            if (fieldShouldNotEmpty()) {
+                if (selectedImageUris.isNotEmpty()) {
                     val imageFiles = selectedImageUris.map { uri ->
                         File(getRealPathFromURI(uri))
                     }
                     val imageParts = imageFiles.map { file ->
-                        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+                        val requestFile =
+                            RequestBody.create(MediaType.parse("multipart/form-data"), file)
                         MultipartBody.Part.createFormData("files[]", file.name, requestFile)
                     }
-                    val add = AddWithImage(productName.text.toString(), productType, productPrice.text.toString(),
-                        productTax.text.toString(), imageParts)
+                    val add = AddWithImage(
+                        productName.text.toString(), productType, productPrice.text.toString(),
+                        productTax.text.toString(), imageParts
+                    )
                     productFragmentViewModel.addProductItemWithImage(add)
                 } else {
-                    val add = AddProductItem(productName.text.toString(), productType, productPrice.text.toString(),
-                        productTax.text.toString())
+                    val add = AddProductItem(
+                        productName.text.toString(), productType, productPrice.text.toString(),
+                        productTax.text.toString()
+                    )
                     productFragmentViewModel.addProduct(add)
                     dismiss()
                 }
@@ -113,7 +117,8 @@ class AddProductFragment : BottomSheetDialogFragment() {
         // Get the enum values as an array
         val productTypes = Constants.ProductType.values()
 
-        val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, productTypes.map { it.name })
+        val adapter =
+            ArrayAdapter(requireContext(), R.layout.dropdown_item, productTypes.map { it.name })
 
         // Apply the adapter to the AutoCompleteTextView
         autoCompleteTextView.setAdapter(adapter)
@@ -131,15 +136,21 @@ class AddProductFragment : BottomSheetDialogFragment() {
     }
 
     private fun fieldShouldNotEmpty(): Boolean {
-        if(productName.toString().isBlank()) {
+        Log.d("fieldShouldNotEmpty", "  ${productName.text.toString().isBlank()}")
+
+        if (productName.text.isNullOrBlank()) {
             productName.requestFocus()
-        } else if(productPrice.toString().isBlank()) {
+            return false
+        } else if (productPrice.text.isNullOrBlank()) {
             productPrice.requestFocus()
-        } else if(productTax.toString().isBlank()) {
+            return false
+        } else if (productTax.text.isNullOrBlank()) {
             productTax.requestFocus()
+            return false
         }
         return true
     }
+
 
     private fun selectImage() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -162,6 +173,7 @@ class AddProductFragment : BottomSheetDialogFragment() {
     private fun getBitmapFromUri(uri: Uri): Bitmap {
         return MediaStore.Images.Media.getBitmap(requireContext().contentResolver, uri)
     }
+
     private fun getRealPathFromURI(uri: Uri): String {
         val cursor = activity?.contentResolver?.query(uri, null, null, null, null)
         cursor?.moveToFirst()
