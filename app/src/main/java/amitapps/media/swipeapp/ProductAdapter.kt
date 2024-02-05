@@ -25,12 +25,11 @@ class ProductAdapter(private val productList: List<ProductItem>) :
 
     private var filteredData: List<ProductItem> = productList
 
-    // Other methods in the adapter...
 
     fun filter(query: String) {
         filteredData = productList.filter {
             it.product_name.contains(query, ignoreCase = true)
-            // Replace 'name' with the field you want to search in.
+            it.product_type.contains(query, ignoreCase = true)
         }
         notifyDataSetChanged()
     }
