@@ -1,6 +1,7 @@
 package amitapps.media.swipeapp
 
 import amitapps.media.swipeapp.api.ProductAPI
+import amitapps.media.swipeapp.databinding.FragmentListingProductsBinding
 import amitapps.media.swipeapp.models.AddProductItem
 import amitapps.media.swipeapp.models.ProductItem
 import amitapps.media.swipeapp.mvvm.ListingProductFragmentViewModel
@@ -17,6 +18,7 @@ import android.widget.SearchView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +33,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 class ListingProductsFragment : Fragment() {
     private lateinit var productAdapter: ProductAdapter
     private lateinit var manager: RecyclerView.LayoutManager
-    private lateinit var searchView: SearchView
+
+    private var _binding: FragmentListingProductsBinding? = null
+    private val binding get() = _binding!!
 
     private val productViewModel by viewModels<ListingProductFragmentViewModel>()
 
@@ -41,7 +45,8 @@ class ListingProductsFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         productAdapter = ProductAdapter(emptyList())
-        return inflater.inflate(R.layout.fragment_listing_products, container, false)
+        _binding = FragmentListingProductsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,16 +54,11 @@ class ListingProductsFragment : Fragment() {
 
         productViewModel.getProduct()
 
-//        manager = LinearLayoutManager(requireContext())
         manager = GridLayoutManager(requireContext(), 2)
 
-        val button: Button = view.findViewById(R.id.buttonAddProduct)
-        searchView = view.findViewById(R.id.searchView)
 
-
-        button.setOnClickListener {
-            val bottomSheetFragment = AddProductFragment()
-            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+        binding.buttonAddProduct.setOnClickListener {
+            findNavController().navigate(R.id.action_listingProductsFragment_to_addProductFragment)
             bindObserversForAddProduct()
         }
 
@@ -68,7 +68,7 @@ class ListingProductsFragment : Fragment() {
     }
 
     private fun searchProducts() {
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
@@ -110,7 +110,7 @@ class ListingProductsFragment : Fragment() {
             //set binding.progressBar.isVisible = false
             when (it) {
                 is NetworkResult.Success -> {
-                    requireView().findViewById<RecyclerView>(R.id.recyclerViewProducts).apply {
+                    binding.recyclerViewProducts.apply {
                         val response = it.data as List<ProductItem>
                         productAdapter = ProductAdapter(response)
                         layoutManager = manager

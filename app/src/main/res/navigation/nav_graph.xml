@@ -9,5 +9,14 @@
         android:id="@+id/listingProductsFragment"
         android:name="amitapps.media.swipeapp.ListingProductsFragment"
         android:label="fragment_listing_products"
-        tools:layout="@layout/fragment_listing_products" />
+        tools:layout="@layout/fragment_listing_products" >
+        <action
+            android:id="@+id/action_listingProductsFragment_to_addProductFragment"
+            app:destination="@id/addProductFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/addProductFragment"
+        android:name="amitapps.media.swipeapp.AddProductFragment"
+        android:label="fragment_add_product2"
+        tools:layout="@layout/fragment_add_product2" />
 </navigation>
