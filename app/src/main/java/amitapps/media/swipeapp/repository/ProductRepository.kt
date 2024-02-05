@@ -57,7 +57,7 @@ class ProductRepository @Inject constructor(private val productAPI: ProductAPI) 
             _statusLiveData.postValue(NetworkResult.Error("product not added, something wrong"))
         }
 
-        Log.d("productAddedResponse  AddWithImage ------>", productAddedResponse.message())
+//        Log.d("productAddedResponse  AddWithImage ------>", productAddedResponse.message())
 //        Toast.makeText(requ, productAddedResponse.message(), Toast.LENGTH_LONG).show()
     }
 
@@ -83,7 +83,7 @@ class ProductRepository @Inject constructor(private val productAPI: ProductAPI) 
             _statusLiveData.postValue(NetworkResult.Error("product not added, something wrong"))
         }
 
-        Log.d("productAddedResponseAddWithoutImage ------>", productAddedResponse.message())
+//        Log.d("productAddedResponseAddWithoutImage ------>", productAddedResponse.message())
     }
 
     private fun handleResponse(response: Response<Product>) {

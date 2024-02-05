@@ -16,6 +16,7 @@ import android.widget.Button
 import android.widget.Toast
 import android.widget.SearchView
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -101,6 +102,7 @@ class ListingProductsFragment : Fragment() {
         productViewModel.productResponseLiveData.observe(viewLifecycleOwner, Observer {
 
             //set binding.progressBar.isVisible = false
+            binding.progressBar.isVisible = false
             when (it) {
                 is NetworkResult.Success -> {
                     binding.recyclerViewProducts.apply {
@@ -117,7 +119,7 @@ class ListingProductsFragment : Fragment() {
 
                 is NetworkResult.Loading -> {
                     //setup progress bar
-                    //set binding.progressBar.isVisible = true
+                    binding.progressBar.isVisible = true
                 }
             }
         })
