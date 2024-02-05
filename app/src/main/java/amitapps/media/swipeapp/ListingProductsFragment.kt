@@ -31,6 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class ListingProductsFragment : Fragment() {
     private lateinit var productAdapter: ProductAdapter
     private lateinit var manager: RecyclerView.LayoutManager
+    private lateinit var searchView: SearchView
 
     private val productViewModel by viewModels<ListingProductFragmentViewModel>()
 
@@ -52,17 +53,21 @@ class ListingProductsFragment : Fragment() {
         manager = GridLayoutManager(requireContext(), 2)
 
         val button: Button = view.findViewById(R.id.buttonAddProduct)
-        val searchView: SearchView = view.findViewById(R.id.searchView)
+        searchView = view.findViewById(R.id.searchView)
 
 
         button.setOnClickListener {
-                val bottomSheetFragment = AddProductFragment()
-                bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
-                bindObserversForAddProduct()
+            val bottomSheetFragment = AddProductFragment()
+            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+            bindObserversForAddProduct()
         }
 
         bindObservers()
         // Set a listener on the SearchView
+        searchProducts()
+    }
+
+    private fun searchProducts() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
@@ -74,23 +79,28 @@ class ListingProductsFragment : Fragment() {
                 return true
             }
         })
-
     }
 
     private fun bindObserversForAddProduct() {
-            productViewModel.statusLiveData.observe(viewLifecycleOwner, Observer {
-                when(it) {
-                    is NetworkResult.Success -> {
-                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
-                    }
-                    is NetworkResult.Error -> {
-                        Toast.makeText(requireContext(), it.message + "  AddProductFragment", Toast.LENGTH_LONG).show()
-                    }
-                    is NetworkResult.Loading -> {
-//                    Toast.makeText(requireContext(), "data not able to post", Toast.LENGTH_LONG).show()
-                    }
+        productViewModel.statusLiveData.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is NetworkResult.Success -> {
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
                 }
-            })
+
+                is NetworkResult.Error -> {
+                    Toast.makeText(
+                        requireContext(),
+                        it.message + "  AddProductFragment",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+                is NetworkResult.Loading -> {
+//                    Toast.makeText(requireContext(), "data not able to post", Toast.LENGTH_LONG).show()
+                }
+            }
+        })
 
     }
 
@@ -100,13 +110,14 @@ class ListingProductsFragment : Fragment() {
             //set binding.progressBar.isVisible = false
             when (it) {
                 is NetworkResult.Success -> {
-                        requireView().findViewById<RecyclerView>(R.id.recyclerViewProducts).apply {
-                            val response = it.data as List<ProductItem>
-                            productAdapter = ProductAdapter(response)
-                            layoutManager = manager
-                            adapter = productAdapter
-                        }
+                    requireView().findViewById<RecyclerView>(R.id.recyclerViewProducts).apply {
+                        val response = it.data as List<ProductItem>
+                        productAdapter = ProductAdapter(response)
+                        layoutManager = manager
+                        adapter = productAdapter
+                    }
                 }
+
                 is NetworkResult.Error -> {
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
                 }

@@ -28,7 +28,7 @@ class ProductAdapter(private val productList: List<ProductItem>) :
 
     fun filter(query: String) {
         filteredData = productList.filter {
-            it.product_name.contains(query, ignoreCase = true)
+            it.product_name.contains(query, ignoreCase = true) ||
             it.product_type.contains(query, ignoreCase = true)
         }
         notifyDataSetChanged()
