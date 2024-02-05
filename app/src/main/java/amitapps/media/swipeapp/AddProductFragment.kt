@@ -177,11 +177,52 @@ class AddProductFragment : BottomSheetDialogFragment() {
     }
 
 
+    private val READ_EXTERNAL_STORAGE_REQUEST_CODE = 101
+
     private fun selectImage() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                    android.Manifest.permission.MANAGE_EXTERNAL_STORAGE
+                ),
+                READ_EXTERNAL_STORAGE_REQUEST_CODE
+            )
+            Log.d("Permission_not_granted", " some message")
+            // [TODO] need to fix it
+            openImagePicker()
+        } else {
+            // Permission is already granted, proceed with image selection
+            openImagePicker()
+        }
+    }
+
+    private fun openImagePicker() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent, REQUEST_IMAGE_PICK)
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == READ_EXTERNAL_STORAGE_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, proceed with image selection
+                openImagePicker()
+            } else {
+                // Permission denied, show a message or handle it accordingly
+                Toast.makeText(requireContext(), "Permission Denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 

@@ -87,7 +87,7 @@ class ListingProductsFragment : Fragment() {
         }
 
         searchProducts()
-        
+
 
         // Set up back press handling
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
