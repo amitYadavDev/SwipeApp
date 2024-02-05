@@ -29,18 +29,19 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilProductType"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
             android:layout_below="@id/tilProductName"
             android:layout_marginBottom="16dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etProductType"
-                style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
-                android:layout_width="match_parent"
+            <AutoCompleteTextView
+                android:id="@+id/spinnerProductType"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Product Type" />
+                android:hint="Select Type"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout

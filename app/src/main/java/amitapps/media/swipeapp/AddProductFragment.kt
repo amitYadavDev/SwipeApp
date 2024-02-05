@@ -3,9 +3,11 @@ package amitapps.media.swipeapp
 import amitapps.media.swipeapp.models.AddProductItem
 import amitapps.media.swipeapp.models.AddWithImage
 import amitapps.media.swipeapp.mvvm.ListingProductFragmentViewModel
+import amitapps.media.swipeapp.utils.Constants
 import amitapps.media.swipeapp.utils.NetworkResult
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
@@ -15,10 +17,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -35,7 +42,8 @@ import java.io.File
 @AndroidEntryPoint
 class AddProductFragment : BottomSheetDialogFragment() {
     private lateinit var productName: TextInputEditText
-    private lateinit var productType: TextInputEditText
+    private var productType: String = Constants.ProductType.Product.toString()
+    private lateinit var autoCompleteTextView: AutoCompleteTextView
     private lateinit var productPrice: TextInputEditText
     private lateinit var productTax: TextInputEditText
     private lateinit var submit: Button
@@ -61,12 +69,16 @@ class AddProductFragment : BottomSheetDialogFragment() {
 
     private fun addData() {
         productName = requireView().findViewById(R.id.etProductName)
-        productType = requireView().findViewById(R.id.etProductType)
         productPrice = requireView().findViewById(R.id.etPrice)
         productTax = requireView().findViewById(R.id.etTax)
         submit = requireView().findViewById(R.id.btnSubmit)
         btnSelectImage = requireView().findViewById(R.id.btnSelectImage)
         ivProductImage = requireView().findViewById(R.id.ivProductImage)
+        autoCompleteTextView = requireView().findViewById(R.id.spinnerProductType)
+
+       selectProductType()
+
+
 
         btnSelectImage.setOnClickListener {
             selectImage()
@@ -83,21 +95,50 @@ class AddProductFragment : BottomSheetDialogFragment() {
                         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
                         MultipartBody.Part.createFormData("files[]", file.name, requestFile)
                     }
-                    val add = AddWithImage(productName.text.toString(), productType.text.toString(), productPrice.text.toString(),
+                    val add = AddWithImage(productName.text.toString(), productType, productPrice.text.toString(),
                         productTax.text.toString(), imageParts)
                     productFragmentViewModel.addProductItemWithImage(add)
                 } else {
-                    val add = AddProductItem(productName.text.toString(), productType.text.toString(), productPrice.text.toString(),
+                    val add = AddProductItem(productName.text.toString(), productType, productPrice.text.toString(),
                         productTax.text.toString())
                     productFragmentViewModel.addProduct(add)
+                    dismiss()
                 }
 
             }
         }
     }
+
+    private fun selectProductType() {
+        // Get the enum values as an array
+        val productTypes = Constants.ProductType.values()
+
+        val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, productTypes.map { it.name })
+
+        // Apply the adapter to the AutoCompleteTextView
+        autoCompleteTextView.setAdapter(adapter)
+
+        autoCompleteTextView.setOnItemClickListener { parent, view, position, id ->
+            val selectedProductType = parent.adapter.getItem(position)
+            productType = selectedProductType.toString()
+//            Log.d("autoCompleteTextView  ", productType)
+        }
+//        autoCompleteTextView.setOnDismissListener {
+//            // Handle the case where nothing is selected (dropdown is dismissed)
+//            productType = Constants.ProductType.Service.toString()
+//            Log.d("autoCompleteTextView  ", " e service hai")
+//        }
+    }
+
     private fun fieldShouldNotEmpty(): Boolean {
-        return productTax.toString().isNotBlank() && productName.toString().isNotBlank() &&
-                productPrice.toString().isNotBlank() && productType.toString().isNotBlank()
+        if(productName.toString().isBlank()) {
+            productName.requestFocus()
+        } else if(productPrice.toString().isBlank()) {
+            productPrice.requestFocus()
+        } else if(productTax.toString().isBlank()) {
+            productTax.requestFocus()
+        }
+        return true
     }
 
     private fun selectImage() {
