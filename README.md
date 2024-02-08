@@ -1,7 +1,8 @@
 ### Screenshots
 <div style="dispaly:flex">
-    <img src="https://github.com/amitYadavDev/Film-Fiesta-App/assets/45551012/e33e2992-1a4c-4fc0-a610-d4e684303b6c" width="24%">
-    <img src="https://github.com/amitYadavDev/Film-Fiesta-App/assets/45551012/f8b154be-1b79-49cf-a832-5b88049431dd" width="24%">
-    <img src="https://github.com/amitYadavDev/Film-Fiesta-App/assets/45551012/03c47bdc-db8d-4721-88d9-d18695501ec6" width="24%">
-    <img src="https://github.com/amitYadavDev/Film-Fiesta-App/assets/45551012/ca6ee621-4b11-49c9-beac-705158a400e6" width="24%">
+    <img src="https://github.com/amitYadavDev/SwipeApp/assets/45551012/99168dee-75e7-4d28-aff4-3f67f250e396" width="24%">
+    <img src="https://github.com/amitYadavDev/SwipeApp/assets/45551012/ce79b64c-fa14-4487-9b17-c1027c5156e9" width="24%">
+    <img src="https://github.com/amitYadavDev/SwipeApp/assets/45551012/577c1c7f-313d-4ee8-8d59-79671af9aa1c" width="24%">
+    <img src="https://github.com/amitYadavDev/SwipeApp/assets/45551012/9c19b840-08ea-4a3e-a727-66ac77f21b5b" width="24%">
+    <img src="https://github.com/amitYadavDev/SwipeApp/assets/45551012/08d79216-c699-47ba-a840-5221d8b4ac5b" width="24%">
 </div>
