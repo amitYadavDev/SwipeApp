@@ -47,18 +47,6 @@ The Swipe Android App is an Android application designed for product management.
     <img src="https://github.com/amitYadavDev/SwipeApp/assets/45551012/08d79216-c699-47ba-a840-5221d8b4ac5b" width="24%">
 </div>
 
-
-## Features
-- **Product Search:** Easily search for products.
-- **Navigation:** User-friendly navigation to explore different sections.
-- **Data Entry:** Efficient data entry for managing product information.
-
-## Usage
-1. Clone the repository.
-2. Navigate to the project directory.
-3. Run `npm install` to install dependencies.
-4. ...
-
 ## Contributing
 - Fork the repository.
 - Create a new branch: `git checkout -b feature-branch`.
