@@ -3,14 +3,14 @@ The Swipe Android App is an Android application designed for product management.
 
 ## 1. Product Listing Screen(Host Fragment)
 ### Features
-    - Display a comprehensive list of products sourced from the Swipe API endpoint.
-    - User-friendly product search functionality.
-    - Smooth scrolling through the product list.
-    - Quick navigation to the Add Product screen via a dedicated button.
-    - Dynamic loading of product images from provided URLs or default images when URLs are empty.
-    - Offline caching using Room for uninterrupted access to cached data in the absence of internet connectivity.
-    - Gives a visual cue to the user when disconnected.
-    - Implements modern technologies and best practicies such as MVVM architecture, Retrofit for REST, and Lifecycle for Kotlin Coroutines.
+- Display a comprehensive list of products sourced from the Swipe API endpoint.
+- User-friendly product search functionality.
+- Smooth scrolling through the product list.
+- Quick navigation to the Add Product screen via a dedicated button.
+- Dynamic loading of product images from provided URLs or default images when URLs are empty.
+- Offline caching using Room for uninterrupted access to cached data in the absence of internet connectivity.
+- Gives a visual cue to the user when disconnected.
+- Implements modern technologies and best practicies such as MVVM architecture, Retrofit for REST, and Lifecycle for Kotlin Coroutines.
 
 ### Screenshots
 <div style="dispaly:flex">
