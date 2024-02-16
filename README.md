@@ -47,9 +47,3 @@ The Swipe Android App is an Android application designed for product management.
     <img src="https://github.com/amitYadavDev/SwipeApp/assets/45551012/08d79216-c699-47ba-a840-5221d8b4ac5b" width="24%">
 </div>
 
-## Contributing
-- Fork the repository.
-- Create a new branch: `git checkout -b feature-branch`.
-- Make changes and commit: `git commit -m "Add new feature"`.
-- Push to the branch: `git push origin feature-branch`.
-- Create a pull request.
