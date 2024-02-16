@@ -12,10 +12,10 @@ The Swipe Android App is an Android application designed for product management.
 
 ## 2. Add Product Screen (BottomSheetDialogFragment)
 ### Features:
-- Streamlined process for adding new products with the following details:
-- Product type selection from a curated list of options.
-- Input fields for product name, selling price, and tax rate ensure comprehensive data entry.
-- Input field validation guarantees accuracy in data entry, including product type selection, non-empty product name, and proper formatting for selling price and tax.
+- Efficient addition of new products with a streamlined process.
+- Comprehensive data entry through input fields for product name, selling price, and tax rate.
+- Validation ensures accurate data entry, covering product type selection, non-empty product name, and proper formatting for selling price and tax.
+- Choose the product type from a curated list of options.
 
 ### Screenshots
 <div style="dispaly:flex">
