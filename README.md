@@ -1,4 +1,5 @@
 # Swipe Android App
+The Swipe Android App is an Android application designed for product management. It facilitates a smooth user experience, allowing users to easily view and manage products. Key features include product search, user-friendly navigation, and efficient data entry with image capabilities.
 
 ### Screenshots
 <div style="dispaly:flex">
