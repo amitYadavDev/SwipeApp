@@ -2,7 +2,7 @@
 The Swipe Android App is an Android application designed for product management. It facilitates a smooth user experience, allowing users to easily view and manage products. Key features include product search, user-friendly navigation, and efficient data entry with image capabilities.
 
 ## 1. Product Listing Screen(Host Fragment)
-Features:
+ Features:
     Display a comprehensive list of products sourced from the Swipe API endpoint.
     User-friendly product search functionality.
     Smooth scrolling through the product list.
@@ -20,3 +20,22 @@ Features:
     <img src="https://github.com/amitYadavDev/SwipeApp/assets/45551012/9c19b840-08ea-4a3e-a727-66ac77f21b5b" width="24%">
     <img src="https://github.com/amitYadavDev/SwipeApp/assets/45551012/08d79216-c699-47ba-a840-5221d8b4ac5b" width="24%">
 </div>
+
+
+## Features
+- **Product Search:** Easily search for products.
+- **Navigation:** User-friendly navigation to explore different sections.
+- **Data Entry:** Efficient data entry for managing product information.
+
+## Usage
+1. Clone the repository.
+2. Navigate to the project directory.
+3. Run `npm install` to install dependencies.
+4. ...
+
+## Contributing
+- Fork the repository.
+- Create a new branch: `git checkout -b feature-branch`.
+- Make changes and commit: `git commit -m "Add new feature"`.
+- Push to the branch: `git push origin feature-branch`.
+- Create a pull request.
