@@ -21,6 +21,23 @@ The Swipe Android App is an Android application designed for product management.
 - GET Request: https://app.getswipe.in/api/public/get
 - POST Request: https://app.getswipe.in/api/public/add
 
+## 3. Tech Stacks:
+- Single Activity and Multiple Fragment
+- Jetpack Navigation
+- MVVM Architecture
+- Sealed class used
+- Singleton pattern
+- Hilt (Dependency Injection)
+- Retrofit (API Calling)
+- DataBinding
+- LiveData (Observer Pattern)
+- enum class (to define product types)
+- Coroutines (Background tasks)
+- Generic class (to handle network failure)
+- Recyclerview
+- XML (for ui)
+
+
 ### Screenshots
 <div style="dispaly:flex">
     <img src="https://github.com/amitYadavDev/SwipeApp/assets/45551012/99168dee-75e7-4d28-aff4-3f67f250e396" width="24%">
